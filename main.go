@@ -125,12 +125,11 @@ func act() {
 	}
 	defer response.Body.Close()
 
-	bodyBytes, err := io.ReadAll(response.Body)
-	if err != nil {
+	if _, err := io.ReadAll(response.Body); err != nil {
 		log.Fatal("Error:", err)
 		panic(err)
 	}
-	log.Fatal(string(bodyBytes))
+	// log.Fatal(string(bodyBytes))
 }
 
 func actAfter() {
@@ -139,6 +138,7 @@ func actAfter() {
 		"value": time.Now().Unix(),
 	}
 	DB.Put(doneItem)
+	log.Fatal("act after")
 }
 
 func initDB() {
