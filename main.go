@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"time"
-    "io"
-    "net/http"
 
 	"github.com/deta/deta-go/deta"
 	"github.com/deta/deta-go/service/base"
@@ -18,19 +18,19 @@ var DB *base.Base
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-	  port = "8080"
+		port = "8080"
 	}
-    loc, err := time.LoadLocation("Asia/Shanghai")
-    if err != nil {
-        log.Fatal(err)
-        return
-    }
-    time.Local = loc
-  
-	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request)  {
+	loc, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	time.Local = loc
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello world!")
 	})
-	http.HandleFunc("/__space/v0/actions", func (w http.ResponseWriter, r *http.Request)  {
+	http.HandleFunc("/__space/v0/actions", func(w http.ResponseWriter, r *http.Request) {
 		initDB()
 		if hasDone() {
 			log.Fatal("hasDone")
@@ -45,7 +45,7 @@ func main() {
 		log.Fatal("act success")
 	})
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-	  log.Fatal(err)
+		log.Fatal(err)
 	}
 }
 
@@ -119,18 +119,18 @@ func canAct() bool {
 
 func act() {
 	response, err := http.Get(os.Getenv("SIGN_URL"))
-    if err != nil {
-        log.Fatal("Error:", err)
-        panic(err)
-    }
-    defer response.Body.Close()
+	if err != nil {
+		log.Fatal("Error:", err)
+		panic(err)
+	}
+	defer response.Body.Close()
 
-    bodyBytes, err := io.ReadAll(response.Body)
-    if err != nil {
-        log.Fatal("Error:", err)
-        panic(err)
-    }
-    log.Fatal(string(bodyBytes))
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal("Error:", err)
+		panic(err)
+	}
+	log.Fatal(string(bodyBytes))
 }
 
 func actAfter() {
