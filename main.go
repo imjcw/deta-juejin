@@ -30,6 +30,9 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello world!")
 	})
+	http.HandleFunc("/act-time", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, genActTime())
+	})
 	http.HandleFunc("/__space/v0/actions", func(w http.ResponseWriter, r *http.Request) {
 		initDB()
 		if hasDone() {
@@ -55,8 +58,8 @@ func genActTime() int64 {
 	rng := rand.New(source)
 
 	currentDate := time.Now().Format("2006-01-02")
-	startTime, _ := time.Parse("2006-01-02 15:04", currentDate+" 07:30")
-	endTime, _ := time.Parse("2006-01-02 15:04", currentDate+" 18:00")
+	startTime, _ := time.ParseInLocation("2006-01-02 15:04:05", currentDate+" 07:30:00", time.Local)
+	endTime, _ := time.ParseInLocation("2006-01-02 15:04:05", currentDate+" 18:00:00", time.Local)
 
 	randomTime := startTime.Add(time.Duration(rng.Int63n(int64(endTime.Sub(startTime)))))
 
