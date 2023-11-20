@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绘本转换</title>
+    <style>
+        .center {
+            text-align: center;
+        }
+        .v-input {
+            -webkit-text-size-adjust: 100%;
+            tab-size: 4;
+            --radius: 0.5rem;
+            --background: 240 10% 3.9%;
+            --foreground: 0 0% 98%;
+            --card: 240 10% 3.9%;
+            --card-foreground: 0 0% 98%;
+            --popover: 240 10% 3.9%;
+            --popover-foreground: 0 0% 98%;
+            --primary: 0 0% 98%;
+            --primary-foreground: 240 5.9% 10%;
+            --secondary: 240 3.7% 15.9%;
+            --secondary-foreground: 0 0% 98%;
+            --muted: 240 3.7% 15.9%;
+            --muted-foreground: 240 5% 64.9%;
+            --accent: 240 3.7% 15.9%;
+            --accent-foreground: 0 0% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 0 85.7% 97.3%;
+            --border: 240 3.7% 15.9%;
+            --input: 240 3.7% 15.9%;
+            --ring: 240 4.9% 83.9%;
+            color-scheme: dark;
+            --font-sans: "__Inter_a64ecd","__Inter_Fallback_a64ecd";
+            -webkit-font-smoothing: antialiased;
+            box-sizing: border-box;
+            border: 0 solid #e5e7eb;
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgba(59,130,246,.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            font-family: inherit;
+            font-weight: inherit;
+            color: inherit;
+            margin: 0;
+            -webkit-appearance: textfield;
+            outline-offset: -2px;
+            display: flex;
+            height: 2.25rem;
+            border-radius: calc(var(--radius) - 2px);
+            border-width: 1px;
+            border-color: hsl(var(--input));
+            background-color: transparent;
+            padding-left: .75rem;
+            padding-right: .75rem;
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            --tw-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+            --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+            transition-property: color,background-color,border-color,text-decoration-color,fill,stroke;
+            transition-timing-function: cubic-bezier(.4,0,.2,1);
+            transition-duration: .15s;
+            width: 350px;
+        }
+        .v-btn {
+            -webkit-text-size-adjust: 100%;
+            tab-size: 4;
+            --background: 0 0% 100%;
+            --foreground: 240 10% 3.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 240 10% 3.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 240 10% 3.9%;
+            --primary: 240 5.9% 10%;
+            --primary-foreground: 0 0% 98%;
+            --secondary: 240 4.8% 95.9%;
+            --secondary-foreground: 240 5.9% 10%;
+            --muted: 240 4.8% 95.9%;
+            --muted-foreground: 240 3.8% 46.1%;
+            --accent: 240 4.8% 95.9%;
+            --accent-foreground: 240 5.9% 10%;
+            --destructive: 0 72.22% 50.59%;
+            --destructive-foreground: 0 0% 98%;
+            --border: 240 5.9% 90%;
+            --input: 240 5.9% 90%;
+            --ring: 240 5% 64.9%;
+            --radius: 0.5rem;
+            color-scheme: light;
+            --font-sans: "__Inter_a64ecd","__Inter_Fallback_a64ecd";
+            -webkit-font-smoothing: antialiased;
+            --tw-space-y-reverse: 0;
+            box-sizing: border-box;
+            border: 0 solid #e5e7eb;
+            border-color: hsl(var(--border));
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgba(59,130,246,.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            font-family: inherit;
+            margin: 0;
+            text-transform: none;
+            -webkit-appearance: button;
+            background-image: none;
+            cursor: pointer;
+            display: inline-flex;
+            height: 2.25rem;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border-radius: calc(var(--radius) - 2px);
+            background-color: hsl(var(--primary));
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            color: hsl(var(--primary-foreground));
+            --tw-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);
+            --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+            transition-property: color,background-color,border-color,text-decoration-color,fill,stroke;
+            transition-timing-function: cubic-bezier(.4,0,.2,1);
+            transition-duration: .15s;
+            --tw-space-x-reverse: 0;
+            margin-right: calc(.5rem * var(--tw-space-x-reverse));
+            margin-left: calc(.5rem * calc(1 - var(--tw-space-x-reverse)));
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h2 class="center">绘本转换</h2>
+        <div style="display: flex; justify-content: center;" class="center">
+            <div style="display: inline-block;">
+                <input class="v-input" type="text" v-model="link" placeholder="例: https://www.limaogushi.com/huiben/790.html">
+            </div>
+            <div style="width: 100px;display: inline-block;">
+                <button @click="trans" class="v-btn">转换</button>
+            </div>
+        </div>
+        <div v-if="dlink">
+            下载链接: {{ dlink }}
+        </div>
+    </div>
+    <script src="./assets/vue.min.js"></script>
+    <script>
+        var vueHandler = new Vue({
+            el: '#app',
+            data: {
+                link: '',
+                dlink: ''
+            },
+            methods: {
+                trans () {
+                    alert(this.link)
+                }
+            }
+        });
+    </script>
+</body>
+</html>
