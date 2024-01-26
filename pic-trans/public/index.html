@@ -105,7 +105,7 @@
             transition-property: color,background-color,border-color,text-decoration-color,fill,stroke;
             transition-timing-function: cubic-bezier(.4,0,.2,1);
             transition-duration: .15s;
-            width: 350px;
+            width: 360px;
         }
         .v-btn {
             -webkit-text-size-adjust: 100%;
@@ -218,29 +218,77 @@
 <body>
     <div id="app">
         <h2 class="center">绘本转换</h2>
-        <div style="display: flex; justify-content: center;" class="center">
-            <div style="display: inline-block;">
-                <input class="v-input" type="text" v-model="link" placeholder="例: https://www.limaogushi.com/huiben/790.html">
+        <div style="display: flex; justify-content: center; flex-direction: column;" class="center">
+            <div>
+                <input style="margin: 0 auto" class="v-input" type="text" v-model="link" placeholder="例: https://www.limaogushi.com/huiben/790.html">
             </div>
-            <div style="width: 100px;display: inline-block;">
-                <button @click="trans" class="v-btn">转换</button>
+            <div style="margin-top: 1em;">
+                <button v-if="!gening" @click="trans" class="v-btn" :disabled="!link.length">转 换</button>
+                <div class="v-btn" style="background-color: rgb(196, 195, 195)" v-else>转换中...</div>
             </div>
-        </div>
-        <div v-if="dlink">
-            下载链接: {{ dlink }}
+            <div style="margin-top: 1em;">
+                <a href="https://www.limaogushi.com/huiben/" style="text-decoration: none; color: grey; font-size: 14px;" target="_blank">去找书</a>
+            </div>
         </div>
     </div>
     <script src="./assets/vue.min.js"></script>
+    <script src="./assets/axios.min.js"></script>
     <script>
+        function download(downfile) {
+            var tmpLink = document.createElement("a");
+            var objectUrl = URL.createObjectURL(downfile);
+
+            tmpLink.href = objectUrl;
+            tmpLink.download = downfile.name;
+            document.body.appendChild(tmpLink);
+            tmpLink.click();
+
+            document.body.removeChild(tmpLink);
+            URL.revokeObjectURL(objectUrl);
+        }
         var vueHandler = new Vue({
             el: '#app',
             data: {
                 link: '',
-                dlink: ''
+                dlink: '',
+                gening: false
             },
             methods: {
                 trans () {
-                    alert(this.link)
+                    this.link = this.link.replace('m.limaogushi.com', 'www.limaogushi.com')
+                    if (this.link.indexOf('www.limaogushi.com/huiben') < 0) {
+                        alert('当前仅支持 https://www.limaogushi.com/huiben/*.html');
+                        return
+                    }
+                    var self = this;
+                    self.gening = true;
+                    axios.post("/trans", {
+                        url: this.link
+                    }).then(function (res) {
+                        window.location.href = decodeURIComponent(res.data.link);
+                        self.gening = false
+                    })
+                    .catch(e => {
+                        alert(e);
+                        self.gening = false
+                    })
+                    // var request = new Request("/trans", {
+                    //     method: "POST",
+                    //     body: JSON.stringify({
+                    //         url: this.link
+                    //     }),
+                    // });
+                    // var self = this;
+                    // self.gening = true;
+                    // fetch(request)
+                    //     .then(async res => {
+                    //         window.location.href = decodeURIComponent(JSON.parse((await res.text())).link);
+                    //         self.gening = false
+                    //     })
+                    //     .catch(e => {
+                    //         alert(e);
+                    //         self.gening = false
+                    //     })
                 }
             }
         });

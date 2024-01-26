@@ -1,6 +1,7 @@
-import { serveDir } from "https://deno.land/std@0.202.0/http/file_server.ts";
+import { serveDir, serveFile } from "https://deno.land/std@0.202.0/http/file_server.ts";
+import genPPT from "./trans.js";
 
-Deno.serve((req: Request) => {
+Deno.serve({ port: 8080 }, async (req: Request) => {
     const pathname = new URL(req.url).pathname;
 
     if (pathname === "/" || pathname.startsWith("/assets")) {
@@ -10,14 +11,19 @@ Deno.serve((req: Request) => {
     }
 
     if (pathname === "/trans") {
+        var bd = await req.json()
+        var ppt = await genPPT(bd.url)
+        const headers = new Headers()
+        headers.set("Content-Type", "application/json")
         return new Response(JSON.stringify({
-            code: 200,
-            data: {
-                link: ""
-            }
+            link: encodeURIComponent(ppt.path.replace("/tmp/", "/download/"))
         }), {
-            status: 200,
-        });
+            headers: headers
+        })
+    }
+
+    if (pathname.endsWith(".pptx") && pathname.startsWith("/download")) {
+        return serveFile(req, decodeURIComponent(pathname.replace("/download/", "/tmp/")))
     }
 
     return new Response("404: Not Found", {

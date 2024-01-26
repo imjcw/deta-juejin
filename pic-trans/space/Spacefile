@@ -1,0 +1,15 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: picTrans
+    src: .
+    engine: custom
+    include:
+      - picTrans
+      - public
+    run: ./picTrans
+    public: true
+    presets:
+      env:
+        - name: DENO_DIR
+          default: "/tmp/.cache/deno"

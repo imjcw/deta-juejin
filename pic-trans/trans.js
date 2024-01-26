@@ -3,6 +3,8 @@ import { copy, readerFromStreamReader } from "https://deno.land/std/streams/mod.
 import pptxgen from "npm:pptxgenjs";
 import sizeOf from 'npm:image-size';
 
+const baseDir = '/tmp'
+
 async function getLinksFromURL(url) {
     const response = await fetch(url);
     const html = await response.text();
@@ -12,12 +14,18 @@ async function getLinksFromURL(url) {
 
     const anchorElements = doc.querySelectorAll("a");
     const storyName = doc.querySelector('.infoTit').innerText;
+    const saver = [];
     for (const anchorElement of anchorElements) {
         const imageName = anchorElement.innerHTML;
         const href = anchorElement.getAttribute("href");
         if (href && /^第\d+页图片$/.test(imageName)) {
-            pics.push(await saveImage(href, storyName, imageName)) 
+            saver.push(saveImage(href, storyName, imageName))
         }
+    }
+    const results = await Promise.all(saver)
+
+    for (let index = 0; index < results.length; index++) {
+        pics.push(results[index])
     }
 
     return { pics, storyName };
@@ -26,17 +34,17 @@ async function getLinksFromURL(url) {
 // 保存图片到本地
 async function saveImage(url, storyName, imageName) {
     try {
-        await Deno.mkdir(`./images/${storyName}/`, { recursive: true });
+        await Deno.mkdir(`${baseDir}/picTrans/images/${storyName}/`, { recursive: true });
     } catch (e) { console.log(e) }
     const response = await fetch(url);
     const reader = readerFromStreamReader(response.body.getReader());
-    const filePath = `./images/${storyName}/${imageName}.jpg`;
-    const file = await Deno.create(`./images/${storyName}/${imageName}.jpg`);
+    const filePath = `${baseDir}/picTrans/images/${storyName}/${imageName}.jpg`;
+    const file = await Deno.create(`${baseDir}/picTrans/images/${storyName}/${imageName}.jpg`);
     await copy(reader, file);
     return filePath
 }
 
-function createPPT(fileName, pics) {
+async function createPPT(fileName, pics) {
     let pptx = new pptxgen();
     const width = 11.69;
     const height = 8.27;
@@ -53,9 +61,14 @@ function createPPT(fileName, pics) {
         pptx.addSlide().addImage(genImagesParams(pic, width, height));
     }
 
-    pptx.writeFile({
-        fileName: `./images/${fileName}/${fileName}.pptx`
+    await pptx.writeFile({
+        fileName: `${baseDir}/picTrans/images/${fileName}/${fileName}.pptx`,
+        compression:true
     });
+    return {
+        path: `${baseDir}/picTrans/images/${fileName}/${fileName}.pptx`,
+        fileName: `${fileName}.pptx`
+    }
 }
 
 function genImagesParams(picPath, pageWidth, pageHeight) {
@@ -67,7 +80,7 @@ function genImagesParams(picPath, pageWidth, pageHeight) {
         w: 0,
         h: 0
     }
-    if (metadata.width < metadata.height) {
+    if (metadata.height/metadata.width > pageHeight/pageWidth) {
         // 只保证高度撑满页面即可，宽度随意
         params.h = pageHeight
         params.w = parseFloat((pageHeight * (metadata.width / metadata.height)))
@@ -81,11 +94,7 @@ function genImagesParams(picPath, pageWidth, pageHeight) {
     return params;
 }
 
-// Example usage
-const url = "https://www.limaogushi.com/huiben/290.html";
-getLinksFromURL(url).then(storyInfo => {
-    createPPT(storyInfo.storyName, storyInfo.pics)
-}).catch((error) => {
-    console.error(error);
-});
-// 
+export default async function genPPT(url) {
+    const storyInfo = await getLinksFromURL(url);
+    return createPPT(storyInfo.storyName, storyInfo.pics);
+}
